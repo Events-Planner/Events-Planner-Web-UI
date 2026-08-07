@@ -7,5 +7,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/Events-Planner-Web-UI/',
+  base: process.env.VITE_BASE_PATH || '/',
 })
