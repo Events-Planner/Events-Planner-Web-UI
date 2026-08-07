@@ -12,8 +12,8 @@ on:
           - prod
 
       branch:
-        description: "Branch to deploy"
-        required: true
+        description: "Branch to deploy (leave blank for selected branch)"
+        required: false
         type: string
 
 permissions:
@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy ${{ inputs.branch }} to ${{ inputs.environment }}
+    name: Deploy ${{ inputs.branch || github.ref_name }} to ${{ inputs.environment }}
     runs-on: ubuntu-latest
 
     environment:
@@ -37,10 +37,11 @@ jobs:
     steps:
       - name: Validate deployment
         run: |
+          TARGET_BRANCH="${{ inputs.branch || github.ref_name }}"
           echo "Environment: ${{ inputs.environment }}"
-          echo "Branch: ${{ inputs.branch }}"
+          echo "Branch: $TARGET_BRANCH"
 
-          if [ "${{ inputs.environment }}" = "prod" ] && [ "${{ inputs.branch }}" != "master" ]; then
+          if [ "${{ inputs.environment }}" = "prod" ] && [ "$TARGET_BRANCH" != "master" ]; then
             echo "ERROR: PROD can only be deployed from master."
             exit 1
           fi
@@ -50,7 +51,7 @@ jobs:
       - name: Checkout selected branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.branch }}
+          ref: ${{ inputs.branch || github.ref_name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
