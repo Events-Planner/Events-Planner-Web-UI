@@ -36,28 +36,21 @@ jobs:
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ inputs.branch || github.ref_name }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Build Docker image with Dynamic Environment Variables
         env:
           VARS_JSON: ${{ toJson(vars) }}
           SECRETS_JSON: ${{ toJson(secrets) }}
         run: |
-          # 1. Parse all GitHub Environment Variables dynamically into a .env file
           echo "$VARS_JSON" | jq -r 'to_entries[] | "\(.key)=\(.value)"' > .env
-
-          # 2. Parse any Repository/Environment Secrets dynamically into .env
           echo "$SECRETS_JSON" | jq -r 'to_entries[] | "\(.key)=\(.value)"' >> .env
-
-          # 3. Add base path for GitHub Pages build
           echo "VITE_BASE_PATH=/${{ github.event.repository.name }}/" >> .env
-
-          # 4. Pass the generated .env file into Docker as a build secret
           docker build --secret id=env,src=.env -t events-planner-web:github-pages .
 
       - name: Extract build files from Docker container
@@ -68,13 +61,13 @@ jobs:
           docker rm $CONTAINER_ID
 
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
