@@ -3,10 +3,18 @@ name: Deploy Frontend
 on:
   workflow_dispatch:
     inputs:
+      environment:
+        description: "Environment to deploy"
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+
       branch:
         description: "Branch to deploy"
         required: true
-        default: "master"
+        default: "dev"
         type: string
 
 jobs:
@@ -14,6 +22,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Validate deployment
+        run: |
+          if [ "${{ inputs.environment }}" = "prod" ] && [ "${{ inputs.branch }}" != "master" ]; then
+            echo "❌ PROD deployments are only allowed from master."
+            exit 1
+          fi
+
+          echo "Environment: ${{ inputs.environment }}"
+          echo "Branch: ${{ inputs.branch }}"
+
       - name: Checkout selected branch
         uses: actions/checkout@v4
         with:
