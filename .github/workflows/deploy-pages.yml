@@ -31,7 +31,7 @@ jobs:
     name: Build Docker and Deploy
     runs-on: ubuntu-latest
 
-    # Dynamically loads secrets from the environment chosen during trigger (dev or prod)
+    # Automatically loads secrets for whatever environment you select (dev, prod, staging, etc.)
     environment:
       name: ${{ inputs.environment || 'dev' }}
 
@@ -44,10 +44,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image with Enterprise Dynamic Secrets
+      - name: Build Docker image with Dynamic Secret Injection
+        # Converts the ENTIRE secrets object into Docker build arguments automatically
+        env:
+          SECRETS_JSON: ${{ toJson(secrets) }}
         run: |
-          # Automatically converts any loaded environment variable starting with VITE_ or ADMIN_ into a --build-arg
-          BUILD_ARGS=$(env | grep -E '^VITE_|^ADMIN_' | xargs -I {} echo --build-arg {})
+          # Parse all secrets into --build-arg KEY="VALUE" automatically
+          BUILD_ARGS=$(echo '$SECRETS_JSON' | jq -r 'to_entries[] | "--build-arg " + .key + "=\"" + .value + "\""' | tr '\n' ' ')
           
           docker build \
             --build-arg VITE_BASE_PATH=/${{ github.event.repository.name }}/ \
@@ -57,7 +60,6 @@ jobs:
       - name: Extract build files from Docker container
         run: |
           mkdir -p ./dist
-          # Create temporary container and copy out built files
           CONTAINER_ID=$(docker create events-planner-web:github-pages)
           docker cp $CONTAINER_ID:/usr/share/nginx/html/. ./dist/
           docker rm $CONTAINER_ID
