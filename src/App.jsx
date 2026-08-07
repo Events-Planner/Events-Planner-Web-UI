@@ -1,11 +1,9 @@
 import React from 'react';
 
 function App() {
-  const adminUrl = process.env.admin_ui_url;
+  // Read VITE_ variables directly via import.meta.env
+  const adminUrl = import.meta.env.ADMIN_UI_URL || process.env.admin_ui_url;
   const apiUrl = import.meta.env.VITE_API_URL;
-
-  console.log('Admin UI URL:', adminUrl);
-  console.log('API Base URL:', apiUrl);
 
   return (
     <div style={{ padding: '20px' }}>
