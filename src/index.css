@@ -1,1 +1,4 @@
+/* Tell CSS to render MUI styles BEFORE Tailwind utilities */
+@layer theme, base, mui, components, utilities;
+
 @import "tailwindcss";
