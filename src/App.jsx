@@ -1,18 +1,19 @@
-import './App.css'
+import React from 'react';
 
 function App() {
+  const adminUrl = process.env.admin_ui_url;
+  const apiUrl = import.meta.env.VITE_API_URL;
+
+  console.log('Admin UI URL:', adminUrl);
+  console.log('API Base URL:', apiUrl);
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-xl p-8">
-        <h1 className="text-3xl font-bold text-blue-600 mb-4">
-          Events Planner
-        </h1>
-        <p className="text-gray-600">
-          Tailwind CSS is working! 🎉 Github actions deployment is working. now it should work
-        </p>
-      </div>
+    <div style={{ padding: '20px' }}>
+      <h1>Events Planner</h1>
+      <p><strong>Admin URL:</strong> {adminUrl || 'Not set'}</p>
+      <p><strong>API URL:</strong> {apiUrl || 'Not set'}</p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
