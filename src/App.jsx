@@ -10,6 +10,7 @@ function App() {
       <h1>Events Planner</h1>
       <p><strong>Admin URL:</strong> {adminUrl || 'Not set'}</p>
       <p><strong>API URL:</strong> {apiUrl || 'Not set'}</p>
+      <p><strong>API URL:</strong> {test || 'Not set'}</p>
     </div>
   );
 }
