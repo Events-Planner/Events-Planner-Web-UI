@@ -8,7 +8,7 @@ function App() {
           Events Planner
         </h1>
         <p className="text-gray-600">
-          Tailwind CSS is working! 🎉 Github actions deployment is working
+          Tailwind CSS is working! 🎉 Github actions deployment is working. I wish rules worked
         </p>
       </div>
     </div>
