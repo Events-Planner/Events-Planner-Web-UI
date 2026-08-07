@@ -28,8 +28,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Deploy ${{ inputs.branch }} to ${{ inputs.environment }}
-
+    name: Deploy ${{ github.event.inputs.branch }} to ${{ github.event.inputs.environment }}
     runs-on: ubuntu-latest
 
     environment:
