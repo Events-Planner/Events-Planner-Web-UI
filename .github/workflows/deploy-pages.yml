@@ -43,18 +43,21 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image with Auto-Injected Secrets
+      - name: Build Docker image with Dynamic Environment Variables
         env:
-          ADMIN_UI_URL: ${{ secrets.ADMIN_UI_URL }}
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VARS_JSON: ${{ toJson(vars) }}
+          SECRETS_JSON: ${{ toJson(secrets) }}
         run: |
-          # 1. Generate a .env file containing all environment variables loaded into the runner
-          env | grep -vE '^(PATH|HOME|USER|GITHUB_|RUNNER_|DEBIAN_)' > .env
+          # 1. Parse all GitHub Environment Variables dynamically into a .env file
+          echo "$VARS_JSON" | jq -r 'to_entries[] | "\(.key)=\(.value)"' > .env
 
-          # 2. Append repository base path
+          # 2. Parse any Repository/Environment Secrets dynamically into .env
+          echo "$SECRETS_JSON" | jq -r 'to_entries[] | "\(.key)=\(.value)"' >> .env
+
+          # 3. Add base path for GitHub Pages build
           echo "VITE_BASE_PATH=/${{ github.event.repository.name }}/" >> .env
 
-          # 3. Pass .env to Docker secret mount
+          # 4. Pass the generated .env file into Docker as a build secret
           docker build --secret id=env,src=.env -t events-planner-web:github-pages .
 
       - name: Extract build files from Docker container

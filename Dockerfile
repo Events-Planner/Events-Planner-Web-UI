@@ -6,7 +6,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-# Mount the secret .env file during build so Vite automatically loads ALL secrets
+# Mount the dynamically generated .env file during build
 RUN --mount=type=secret,id=env,target=/app/.env npm run build
 
 # Stage 2: Serve static files using Nginx

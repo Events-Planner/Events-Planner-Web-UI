@@ -3,10 +3,10 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => {
-  // Load ALL environment variables from .env file
+  // Load ALL environment variables from .env
   const env = loadEnv(mode, process.cwd(), '')
 
-  // Dynamically map every key to process.env
+  // Dynamically attach every single variable to process.env
   const processEnvDefines = {}
   Object.keys(env).forEach((key) => {
     processEnvDefines[`process.env.${key}`] = JSON.stringify(env[key])
