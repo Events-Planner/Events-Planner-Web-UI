@@ -11,5 +11,9 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
     ],
     base: env.VITE_BASE_PATH || '/',
+    define: {
+      // Replaces process.env.admin_ui_url during Vite build
+      'process.env.admin_ui_url': JSON.stringify(env.ADMIN_UI_URL || env.VITE_ADMIN_UI_URL || ''),
+    },
   }
 })
