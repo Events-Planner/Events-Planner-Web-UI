@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  
+
   return {
     plugins: [
       react(),
@@ -12,7 +12,6 @@ export default defineConfig(({ mode }) => {
     ],
     base: env.VITE_BASE_PATH || '/',
     define: {
-      // Replaces process.env.admin_ui_url during Vite build
       'process.env.admin_ui_url': JSON.stringify(env.ADMIN_UI_URL || env.VITE_ADMIN_UI_URL || ''),
     },
   }
