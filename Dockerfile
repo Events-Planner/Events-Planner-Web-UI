@@ -2,20 +2,12 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-# Accept dynamic build arguments
-ARG VITE_BASE_PATH=/
-ARG ADMIN_UI_URL
-ARG VITE_API_URL
-
-# Expose as ENVs for Vite compilation
-ENV VITE_BASE_PATH=$VITE_BASE_PATH
-ENV ADMIN_UI_URL=$ADMIN_UI_URL
-ENV VITE_API_URL=$VITE_API_URL
-
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+
+# Mount the secret .env file during build so Vite automatically loads ALL secrets
+RUN --mount=type=secret,id=env,target=/app/.env npm run build
 
 # Stage 2: Serve static files using Nginx
 FROM nginx:alpine

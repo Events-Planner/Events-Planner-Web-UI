@@ -43,16 +43,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image with Secrets
+      - name: Build Docker image with Auto-Injected Secrets
         env:
           ADMIN_UI_URL: ${{ secrets.ADMIN_UI_URL }}
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: |
-          docker build \
-            --build-arg VITE_BASE_PATH=/${{ github.event.repository.name }}/ \
-            --build-arg ADMIN_UI_URL="$ADMIN_UI_URL" \
-            --build-arg VITE_API_URL="$VITE_API_URL" \
-            -t events-planner-web:github-pages .
+          # 1. Generate a .env file containing all environment variables loaded into the runner
+          env | grep -vE '^(PATH|HOME|USER|GITHUB_|RUNNER_|DEBIAN_)' > .env
+
+          # 2. Append repository base path
+          echo "VITE_BASE_PATH=/${{ github.event.repository.name }}/" >> .env
+
+          # 3. Pass .env to Docker secret mount
+          docker build --secret id=env,src=.env -t events-planner-web:github-pages .
 
       - name: Extract build files from Docker container
         run: |
