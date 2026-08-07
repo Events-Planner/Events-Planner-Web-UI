@@ -29,7 +29,12 @@ concurrency:
 jobs:
   deploy:
     name: Deploy ${{ inputs.branch }} to ${{ inputs.environment }}
+
     runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Validate deployment
@@ -68,7 +73,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./dist
 
