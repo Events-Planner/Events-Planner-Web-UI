@@ -4,7 +4,7 @@ function App() {
   // Read VITE_ variables directly via import.meta.env
   const adminUrl = import.meta.env.ADMIN_UI_URL || process.env.admin_ui_url;
   const apiUrl = import.meta.env.VITE_API_URL;
-
+  const test = process.env.test_number;
   return (
     <div style={{ padding: '20px' }}>
       <h1>Events Planner</h1>
