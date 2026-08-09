@@ -14,22 +14,21 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_BASE_URL = "https://events-planner-restapi.onrender.com/api/auth";
+
 const LoginPage = () => {
   const navigate = useNavigate();
 
-  // Form state
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false
   });
 
-  // UI state
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Handle input field changes
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
     setFormData({
@@ -39,30 +38,24 @@ const LoginPage = () => {
     if (error) setError("");
   };
 
-  // Toggle password visibility
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Connects to your Spring Boot auth endpoint
-      const response = await axios.post("https://events-planner-restapi.onrender.com/api/auth/login", {
+      const response = await axios.post(`${API_BASE_URL}/login`, {
         email: formData.email,
         password: formData.password
       });
 
-      console.log("Login Success:", response.data);
-
-      // Save token if returning JWT from backend
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
       }
 
       setLoading(false);
-      navigate("/events"); // Redirect to events page after login
+      navigate("/Home");
     } catch (err) {
       setLoading(false);
       setError(err.response?.data?.message || "Invalid email or password");
@@ -114,20 +107,22 @@ const LoginPage = () => {
             onChange={handleChange}
             required
             fullWidth
-            slotProps={{ inputLabel: { style: { color: "#94a3b8" } } }}
             sx={{ input: { color: "white" }, fieldset: { borderColor: "#475569" } }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={handleClickShowPassword}
-                    edge="end"
-                    sx={{ color: "#94a3b8" }}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              )
+            slotProps={{
+              inputLabel: { style: { color: "#94a3b8" } },
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                      sx={{ color: "#94a3b8" }}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }
             }}
           />
 
@@ -163,7 +158,7 @@ const LoginPage = () => {
 
         <p className="mt-6 text-center text-sm text-slate-400">
           Don't have an account?{" "}
-          <Link to="/register" className="text-indigo-400 hover:underline font-medium">
+          <Link to="/Register" className="text-indigo-400 hover:underline font-medium">
             Register here
           </Link>
         </p>
