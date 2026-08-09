@@ -3,7 +3,15 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig(({ mode }) => {
+  // Load ALL environment variables from .env
   const env = loadEnv(mode, process.cwd(), '')
+
+  // Dynamically attach every single variable to process.env
+  const processEnvDefines = {}
+  Object.keys(env).forEach((key) => {
+    processEnvDefines[`process.env.${key}`] = JSON.stringify(env[key])
+    processEnvDefines[`process.env.${key.toLowerCase()}`] = JSON.stringify(env[key])
+  })
 
   return {
     plugins: [
@@ -11,8 +19,6 @@ export default defineConfig(({ mode }) => {
       tailwindcss(),
     ],
     base: env.VITE_BASE_PATH || '/',
-    define: {
-      'process.env.admin_ui_url': JSON.stringify(env.ADMIN_UI_URL || env.VITE_ADMIN_UI_URL || ''),
-    },
+    define: processEnvDefines,
   }
 })

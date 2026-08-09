@@ -36,23 +36,22 @@ jobs:
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ inputs.branch || github.ref_name }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
-      - name: Build Docker image with Secrets
+      - name: Build Docker image with Dynamic Environment Variables
         env:
-          ADMIN_UI_URL: ${{ secrets.ADMIN_UI_URL }}
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VARS_JSON: ${{ toJson(vars) }}
+          SECRETS_JSON: ${{ toJson(secrets) }}
         run: |
-          docker build \
-            --build-arg VITE_BASE_PATH=/${{ github.event.repository.name }}/ \
-            --build-arg ADMIN_UI_URL="$ADMIN_UI_URL" \
-            --build-arg VITE_API_URL="$VITE_API_URL" \
-            -t events-planner-web:github-pages .
+          echo "$VARS_JSON" | jq -r 'to_entries[] | "\(.key)=\(.value)"' > .env
+          echo "$SECRETS_JSON" | jq -r 'to_entries[] | "\(.key)=\(.value)"' >> .env
+          echo "VITE_BASE_PATH=/${{ github.event.repository.name }}/" >> .env
+          docker build --secret id=env,src=.env -t events-planner-web:github-pages .
 
       - name: Extract build files from Docker container
         run: |
@@ -62,13 +61,13 @@ jobs:
           docker rm $CONTAINER_ID
 
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Upload build artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
