@@ -51,10 +51,11 @@ const LandingPage = () => {
           <span>✨ Streamline Your Event Planning</span>
         </Box>
 
+        {/* Title Heading with margin-bottom for 1 line space */}
         <Typography 
           variant="h1" 
           className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight text-center"
-          sx={{ fontWeight: 800, textAlign: 'center' }}
+          sx={{ fontWeight: 800, textAlign: 'center', marginBottom: '1.5rem' }}
         >
           Plan Flawless Events. <br />
           <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -62,7 +63,7 @@ const LandingPage = () => {
           </span>
         </Typography>
 
-        {/* Subtitle with explicit margin bottom for 1-line spacing */}
+        {/* Hero Subtitle */}
         <Typography 
           variant="body1" 
           className="text-slate-300 text-lg sm:text-xl font-normal max-w-2xl mx-auto leading-relaxed text-center"
@@ -129,13 +130,15 @@ const LandingPage = () => {
       {/* Feature Section Grid */}
       <Container maxWidth="lg" className="py-20 relative z-10">
         <Box className="text-center mb-14 flex flex-col items-center">
+          {/* Section Heading with margin-bottom for 1 line space */}
           <Typography 
             variant="h3" 
-            className="text-3xl sm:text-4xl font-bold text-white mb-4 text-center" 
-            sx={{ fontWeight: 700, textAlign: 'center' }}
+            className="text-3xl sm:text-4xl font-bold text-white text-center" 
+            sx={{ fontWeight: 700, textAlign: 'center', marginBottom: '1.5rem' }}
           >
             Everything You Need To Host Great Events
           </Typography>
+
           <Typography 
             variant="body1" 
             className="text-slate-400 max-w-xl mx-auto text-center"

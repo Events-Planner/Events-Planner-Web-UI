@@ -44,11 +44,6 @@ const RegisterPage = () => {
       return;
     }
 
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters long");
-      return;
-    }
-
     setLoading(true);
 
     try {
@@ -67,6 +62,21 @@ const RegisterPage = () => {
     }
   };
 
+  // Common styling for dark theme and browser autofill overrides
+  const textFieldStyles = {
+    input: { color: "#ffffff" },
+    fieldset: { borderColor: "#475569" },
+    "& .MuiOutlinedInput-root": {
+      "&:hover fieldset": { borderColor: "#6366f1" },
+      "&.Mui-focused fieldset": { borderColor: "#818cf8" },
+      "& input:-webkit-autofill": {
+        WebkitBoxShadow: "0 0 0 1000px #1e293b inset !important",
+        WebkitTextFillColor: "#ffffff !important",
+        transition: "background-color 5000s ease-in-out 0s",
+      },
+    },
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900 p-4">
       <Paper 
@@ -75,7 +85,7 @@ const RegisterPage = () => {
         sx={{ backgroundColor: "#1e293b", color: "#ffffff" }}
       >
         <Box className="text-center mb-6">
-          <Typography variant="h4" component="h1" className="font-bold text-white mb-2">
+          <Typography variant="h4" component="h1" className="font-bold text-white mb-2" sx={{ fontWeight: 700 }}>
             Create Account
           </Typography>
           <Typography variant="body2" className="text-slate-400">
@@ -90,7 +100,7 @@ const RegisterPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex gap-4">
+          <div className="grid grid-cols-2 gap-3">
             <TextField
               label="First Name"
               name="firstName"
@@ -100,7 +110,7 @@ const RegisterPage = () => {
               required
               fullWidth
               slotProps={{ inputLabel: { style: { color: "#94a3b8" } } }}
-              sx={{ input: { color: "white" }, fieldset: { borderColor: "#475569" } }}
+              sx={textFieldStyles}
             />
             <TextField
               label="Last Name"
@@ -111,7 +121,7 @@ const RegisterPage = () => {
               required
               fullWidth
               slotProps={{ inputLabel: { style: { color: "#94a3b8" } } }}
-              sx={{ input: { color: "white" }, fieldset: { borderColor: "#475569" } }}
+              sx={textFieldStyles}
             />
           </div>
 
@@ -125,7 +135,7 @@ const RegisterPage = () => {
             required
             fullWidth
             slotProps={{ inputLabel: { style: { color: "#94a3b8" } } }}
-            sx={{ input: { color: "white" }, fieldset: { borderColor: "#475569" } }}
+            sx={textFieldStyles}
           />
 
           <TextField
@@ -137,7 +147,7 @@ const RegisterPage = () => {
             onChange={handleChange}
             required
             fullWidth
-            sx={{ input: { color: "white" }, fieldset: { borderColor: "#475569" } }}
+            sx={textFieldStyles}
             slotProps={{
               inputLabel: { style: { color: "#94a3b8" } },
               input: {
@@ -166,13 +176,12 @@ const RegisterPage = () => {
             required
             fullWidth
             slotProps={{ inputLabel: { style: { color: "#94a3b8" } } }}
-            sx={{ input: { color: "white" }, fieldset: { borderColor: "#475569" } }}
+            sx={textFieldStyles}
           />
 
           <Button
             type="submit"
             variant="contained"
-            color="primary"
             size="large"
             disabled={loading}
             className="mt-2 py-3 font-semibold"
