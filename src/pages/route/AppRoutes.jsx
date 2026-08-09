@@ -1,25 +1,24 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Layout from "../layout/Layout";
+import LandingPage from "../landingPage/LandingPage"; // Add this import
 import HomePage from "../homePage/HomePage";
 import RegisterPage from "../loginPage/RegisterPage";
 import LoginPage from "../loginPage/LoginPage";
 
-
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Main Layout wrapper for all pages */}
       <Route element={<Layout />}>
-        {/* Redirect root path / to /Home */}
-        <Route path="/" element={<Navigate to="/Home" replace />} />
+        {/* Root URL opens the Landing Page with Register/Login actions */}
+        <Route path="/" element={<LandingPage />} />
         
-        {/* Child Pages */}
+        {/* Post-login / Dashboard route */}
         <Route path="/Home" element={<HomePage />} />
         <Route path="/Register" element={<RegisterPage />} />
         <Route path="/Login" element={<LoginPage />} />
 
-        {/* Fallback route */}
-        <Route path="*" element={<Navigate to="/Home" replace />} />
+        {/* Fallback */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>
   );

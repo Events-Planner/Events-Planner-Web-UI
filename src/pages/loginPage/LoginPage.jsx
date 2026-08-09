@@ -50,8 +50,10 @@ const LoginPage = () => {
         password: formData.password
       });
 
-      if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
+      // Save token if returned in response payload
+      const token = response.data?.token || response.data?.accessToken || response.data;
+      if (token) {
+        localStorage.setItem("token", typeof token === "string" ? token : JSON.stringify(token));
       }
 
       setLoading(false);
@@ -60,6 +62,21 @@ const LoginPage = () => {
       setLoading(false);
       setError(err.response?.data?.message || "Invalid email or password");
     }
+  };
+
+  // Shared styles for dark input fields & browser autofill overrides
+  const textFieldStyles = {
+    input: { color: "white" },
+    fieldset: { borderColor: "#475569" },
+    "& .MuiOutlinedInput-root": {
+      "&:hover fieldset": { borderColor: "#6366f1" },
+      "&.Mui-focused fieldset": { borderColor: "#818cf8" },
+      "& input:-webkit-autofill": {
+        WebkitBoxShadow: "0 0 0 1000px #1e293b inset !important",
+        WebkitTextFillColor: "#ffffff !important",
+        transition: "background-color 5000s ease-in-out 0s",
+      },
+    },
   };
 
   return (
@@ -95,7 +112,7 @@ const LoginPage = () => {
             required
             fullWidth
             slotProps={{ inputLabel: { style: { color: "#94a3b8" } } }}
-            sx={{ input: { color: "white" }, fieldset: { borderColor: "#475569" } }}
+            sx={textFieldStyles}
           />
 
           <TextField
@@ -107,7 +124,7 @@ const LoginPage = () => {
             onChange={handleChange}
             required
             fullWidth
-            sx={{ input: { color: "white" }, fieldset: { borderColor: "#475569" } }}
+            sx={textFieldStyles}
             slotProps={{
               inputLabel: { style: { color: "#94a3b8" } },
               input: {
