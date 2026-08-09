@@ -1,14 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Typography, Box } from "@mui/material";
-import { 
-  RocketLaunch, 
-  Security, 
-  Analytics, 
-  ConfirmationNumber, 
-  ArrowForward, 
-  LockOpen 
-} from "@mui/icons-material";
+
+// Path imports for MUI Icons to fix missing exports & optimize Vite build
+import RocketLaunch from "@mui/icons-material/RocketLaunch";
+import Security from "@mui/icons-material/Security";
+import Celebration from "@mui/icons-material/Celebration";
+import HomeWork from "@mui/icons-material/HomeWork";
+import Mic from "@mui/icons-material/Mic";
+import Headphones from "@mui/icons-material/Headphones";
+import AutoAwesome from "@mui/icons-material/AutoAwesome";
+import TheaterComedy from "@mui/icons-material/TheaterComedy";
+import Fastfood from "@mui/icons-material/Fastfood";
+import Brush from "@mui/icons-material/Brush";
+import Palette from "@mui/icons-material/Palette";
+import CameraAlt from "@mui/icons-material/CameraAlt";
+import Cake from "@mui/icons-material/Cake";
+import SportsEsports from "@mui/icons-material/SportsEsports";
+import ArrowForward from "@mui/icons-material/ArrowForward";
+import LockOpen from "@mui/icons-material/LockOpen";
 
 const LandingPage = () => {
   const stats = [
@@ -21,22 +31,72 @@ const LandingPage = () => {
     {
       icon: <RocketLaunch fontSize="large" className="text-indigo-400" />,
       title: "Instant Event Creation",
-      description: "Set up customized event timelines, guest lists, and budget caps in under two minutes."
+      description: "Set up customized decorations and budget caps in under two minutes."
     },
     {
-      icon: <Analytics fontSize="large" className="text-purple-400" />,
-      title: "Real-time Expense Tracking",
-      description: "Monitor costs live with intuitive visual breakdowns to avoid overspending."
+      icon: <Celebration fontSize="large" className="text-purple-400" />,
+      title: "Birthday Party Decorations",
+      description: "Theme-based setups, stage backdrops, and custom styling tailored for all ages."
     },
     {
-      icon: <ConfirmationNumber fontSize="large" className="text-pink-400" />,
-      title: "Seamless Ticketing",
-      description: "Manage registrations, access control, and attendee details effortlessly."
+      icon: <HomeWork fontSize="large" className="text-pink-400" />,
+      title: "House Party Setups",
+      description: "Cozy interior decor, ambient lighting, and space optimization for home venues."
+    },
+    {
+      icon: <AutoAwesome fontSize="large" className="text-amber-400" />,
+      title: "Balloon Decor & Arches",
+      description: "Organic balloon garlands, theme arches, and colorful helium bouquets."
+    },
+    {
+      icon: <Mic fontSize="large" className="text-cyan-400" />,
+      title: "Professional Emcee & Host",
+      description: "Engaging anchors to keep the crowd energized, manage event schedules, and direct activities."
+    },
+    {
+      icon: <SportsEsports fontSize="large" className="text-lime-400" />,
+      title: "Party Game Host & Organizer",
+      description: "Lively hosts who organize interactive party games, trivia, crowd challenges, and prize distribution."
+    },
+    {
+      icon: <Headphones fontSize="large" className="text-indigo-400" />,
+      title: "DJ & Sound Setup",
+      description: "High-grade audio gear, party lighting, and custom playlists tailored to your crowd."
+    },
+    {
+      icon: <TheaterComedy fontSize="large" className="text-emerald-400" />,
+      title: "Magicians",
+      description: "Interactive close-up magic shows and stage illusions suited for guests of all ages."
+    },
+    {
+      icon: <Cake fontSize="large" className="text-rose-400" />,
+      title: "Mascots & Character Costumes",
+      description: "Popular cartoon mascot walkarounds for photo ops and kid interactions."
+    },
+    {
+      icon: <Fastfood fontSize="large" className="text-orange-400" />,
+      title: "Catering & Live Food Stalls",
+      description: "Curated party menus, live snack counters, cotton candy, and popcorn machines."
+    },
+    {
+      icon: <Brush fontSize="large" className="text-violet-400" />,
+      title: "Tattoo Artists",
+      description: "Temporary glitter tattoos, body art, and fun face painting stations."
+    },
+    {
+      icon: <Palette fontSize="large" className="text-teal-400" />,
+      title: "Mehendi Artists",
+      description: "Traditional and modern henna designs for bridal parties and festival gatherings."
+    },
+    {
+      icon: <CameraAlt fontSize="large" className="text-sky-400" />,
+      title: "Photography & Videography",
+      description: "Capture key highlights with candid photos, 360 photo booths, and cinematic reels."
     },
     {
       icon: <Security fontSize="large" className="text-emerald-400" />,
-      title: "Encrypted & Secure",
-      description: "Your financial data and user details are protected with bank-grade security."
+      title: "Verified Vendor",
+      description: "Book background-checked event professionals with transparent pricing and ratings."
     }
   ];
 
@@ -51,7 +111,7 @@ const LandingPage = () => {
           <span>✨ Streamline Your Event Planning</span>
         </Box>
 
-        {/* Title Heading with margin-bottom for 1 line space */}
+        {/* Title Heading */}
         <Typography 
           variant="h1" 
           className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight text-center"
@@ -130,7 +190,6 @@ const LandingPage = () => {
       {/* Feature Section Grid */}
       <Container maxWidth="lg" className="py-20 relative z-10">
         <Box className="text-center mb-14 flex flex-col items-center">
-          {/* Section Heading with margin-bottom for 1 line space */}
           <Typography 
             variant="h3" 
             className="text-3xl sm:text-4xl font-bold text-white text-center" 
@@ -177,7 +236,11 @@ const LandingPage = () => {
             <Typography variant="h3" className="text-3xl sm:text-5xl font-extrabold text-white mb-4 text-center" sx={{ fontWeight: 800, textAlign: 'center' }}>
               Start Planning Your Next Event Today
             </Typography>
-            <Typography variant="body1" className="text-slate-300 text-lg mb-8 text-center" sx={{ textAlign: 'center' }}>
+            <Typography 
+              variant="body1" 
+              className="text-slate-300 text-lg mb-10 text-center" 
+              sx={{ textAlign: 'center', marginBottom: '2.5rem' }}
+            >
               Join thousands of organizers making event management completely stress-free.
             </Typography>
             <Button
